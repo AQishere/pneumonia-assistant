@@ -58,3 +58,18 @@ class Predictor:
         p2 = self._score(self.stage2, features_stage2)
         band = "High" if p2 >= self.threshold_stage2 else "Moderate"
         return {**out, "stage": 2, "p_stage2": p2, "band": band}
+
+
+class LazyPredictor:
+    """A Predictor that loads the models on first use. Unpickling them imports scikit-learn and
+    CatBoost (about 2 s), which serverless cold starts would otherwise pay on every request,
+    even ones that never score anything (sign-in, dashboard, history)."""
+
+    def __init__(self, **kwargs):
+        self._kwargs = kwargs
+        self._predictor: Predictor | None = None
+
+    def __getattr__(self, name: str):
+        if self._predictor is None:
+            self._predictor = Predictor(**self._kwargs)
+        return getattr(self._predictor, name)

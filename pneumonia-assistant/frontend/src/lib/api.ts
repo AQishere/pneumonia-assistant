@@ -66,6 +66,10 @@ export interface CheckAnswers {
 }
 
 export const api = {
+  /** Fire-and-forget: starts a sleeping API while Firebase restores the session. */
+  wake: () => {
+    fetch(`${BASE}/ping`).catch(() => {});
+  },
   me: () => request<Me>("/me"),
   signup: (uid: string, input: SignupInput) =>
     request<Profile>("/patients", { method: "POST", body: { patient_id: uid, ...input } }),

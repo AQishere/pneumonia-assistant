@@ -25,7 +25,7 @@ from api.chat_service import Conversations
 from api.db import repository_from_env
 from api.features import (CONDITIONS, LAB_FIELDS, VITAL_NAMES, build_features, counts, missing_stage1,
                           missing_stage2_v2)
-from api.predictor import Predictor
+from api.predictor import LazyPredictor, Predictor
 from api.schemas import AssessIn, DemoRunIn, FlagsIn, LabsIn, PatientIn, PatientPatch, ReadingsIn
 
 
@@ -79,7 +79,7 @@ def create_app(repo=None, predictor: Predictor | None = None, api_key: str | Non
     api_key = api_key or os.getenv("API_KEY")
     if not api_key:
         raise RuntimeError("API_KEY is not set. Add it to .env (see .env.example).")
-    predictor = predictor or Predictor()
+    predictor = predictor or LazyPredictor()
     if repo is None:
         repo = repository_from_env()
         if repo.backend == "memory" and os.getenv("SEED_DEMO", "1") == "1":
@@ -130,6 +130,11 @@ def create_app(repo=None, predictor: Predictor | None = None, api_key: str | Non
                 "created_at": patient.get("created_at")}
 
     router = APIRouter(dependencies=[Depends(get_caller)])
+
+    @app.get("/ping")
+    def ping():
+        """Cheap wake-up call: no database, no models."""
+        return {"status": "ok"}
 
     @app.get("/health")
     def health():

@@ -39,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!firebaseConfigured) return;
+    api.wake();
     return onAuthStateChanged(firebaseAuth(), async (u) => {
       setUser(u);
       await loadMe(u);
