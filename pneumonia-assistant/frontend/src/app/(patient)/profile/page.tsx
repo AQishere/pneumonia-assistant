@@ -1,14 +1,15 @@
 "use client";
 
-import { X } from "lucide-react";
+import { HeartPulse, Stethoscope, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { Avatar, PageHeader } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardIcon, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { YesNo } from "@/components/yes-no";
+import { ListGroup, YesNo } from "@/components/yes-no";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { CONDITION_LABELS, CONDITIONS } from "@/lib/bands";
@@ -69,66 +70,100 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-semibold">Profile</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>{profile.display_name}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="max-w-32 space-y-1.5">
-            <Label htmlFor="age">Age</Label>
-            <Input id="age" type="number" min={0} max={120} value={age} onChange={(e) => setAge(e.target.value)} />
+    <>
+      <PageHeader title="Profile" />
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[380px_minmax(0,1fr)]">
+        <div className="space-y-8">
+          <div
+            className="flex animate-rise flex-col items-center rounded-2xl surface px-5 py-7 text-center"
+          >
+            <Avatar name={profile.display_name} className="size-20 text-2xl" />
+            <h2 className="mt-3 text-xl font-semibold">{profile.display_name}</h2>
+            <p className="text-[15px] text-muted-foreground">{me?.email}</p>
+            <dl className="mt-5 grid w-full grid-cols-2 divide-x rounded-xl bg-muted py-3">
+              <div>
+                <dt className="text-[13px] text-muted-foreground">Age</dt>
+                <dd className="text-lg font-semibold">{profile.age ?? "—"}</dd>
+              </div>
+              <div>
+                <dt className="text-[13px] text-muted-foreground">Sex</dt>
+                <dd className="text-lg font-semibold capitalize">{profile.sex?.replaceAll("_", " ") ?? "—"}</dd>
+              </div>
+            </dl>
           </div>
-          {CONDITIONS.map((c) => (
-            <YesNo
-              key={c}
-              id={c}
-              label={CONDITION_LABELS[c]}
-              value={conditions[c]}
-              onChange={(v) => setConditions((s) => ({ ...s, [c]: v }))}
-            />
-          ))}
-          <Button disabled={!changed || busy} onClick={save}>
-            Save changes
-          </Button>
-        </CardContent>
-      </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Your doctor</CardTitle>
-          <CardDescription>
-            A linked doctor can see your readings and results. They need an account in this app.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {profile.doctor_ids.length > 0 && (
-            <ul className="space-y-2">
-              {profile.doctor_ids.map((uid) => (
-                <li key={uid} className="flex items-center justify-between rounded-lg border px-3 py-2 text-sm">
-                  <span>Linked doctor</span>
-                  <Button variant="ghost" size="sm" disabled={busy} onClick={() => unlink(uid)}>
-                    <X className="size-4" /> Remove
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2.5">
+                <CardIcon color="#4f46e5" icon={Stethoscope} />
+                Your doctor
+              </CardTitle>
+              <CardDescription>
+                A linked doctor can see your readings and results. They need an account in this app.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {profile.doctor_ids.length > 0 && (
+                <ul className="divide-y rounded-xl bg-muted px-3">
+                  {profile.doctor_ids.map((uid) => (
+                    <li key={uid} className="flex items-center justify-between py-2 text-[15px]">
+                      <span>Linked doctor</span>
+                      <Button variant="ghost" size="sm" disabled={busy} onClick={() => unlink(uid)} className="text-destructive hover:bg-destructive/10">
+                        <X className="size-4" /> Remove
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="space-y-1.5">
+                <Label htmlFor="doctor-email">Doctor&apos;s email</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="doctor-email"
+                    type="email"
+                    autoComplete="off"
+                    value={doctorEmail}
+                    onChange={(e) => setDoctorEmail(e.target.value)}
+                  />
+                  <Button disabled={!doctorEmail.includes("@") || busy} onClick={link}>
+                    Link doctor
                   </Button>
-                </li>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="content-start self-start">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2.5">
+              <CardIcon color="#e11d48" icon={HeartPulse} />
+              Health details
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between gap-3 border-b pb-3">
+              <Label htmlFor="age" className="text-[15px] font-normal">Age</Label>
+              <Input id="age" type="number" min={0} max={120} value={age} onChange={(e) => setAge(e.target.value)} className="w-24 text-right" />
+            </div>
+            <p className="text-[13px] font-semibold tracking-wide text-muted-foreground uppercase">Long-term conditions</p>
+            <ListGroup>
+              {CONDITIONS.map((c) => (
+                <YesNo
+                  key={c}
+                  id={c}
+                  label={CONDITION_LABELS[c]}
+                  value={conditions[c]}
+                  onChange={(v) => setConditions((s) => ({ ...s, [c]: v }))}
+                />
               ))}
-            </ul>
-          )}
-          <div className="flex gap-2">
-            <Input
-              type="email"
-              placeholder="Doctor's email"
-              value={doctorEmail}
-              onChange={(e) => setDoctorEmail(e.target.value)}
-              aria-label="Doctor's email"
-            />
-            <Button disabled={!doctorEmail.includes("@") || busy} onClick={link}>
-              Link
+            </ListGroup>
+            <Button className="w-full" size="lg" disabled={!changed || busy} onClick={save}>
+              Save changes
             </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

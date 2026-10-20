@@ -1,17 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { PageSkeleton } from "@/components/app-shell";
+import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { YesNo } from "@/components/yes-no";
+import { ListGroup, YesNo } from "@/components/yes-no";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { CONDITION_LABELS, CONDITIONS } from "@/lib/bands";
@@ -34,7 +36,7 @@ export default function OnboardingPage() {
     else if (me?.role) router.replace(me.role === "doctor" ? "/doctor" : "/dashboard");
   }, [loading, user, me, router]);
 
-  if (loading || !user || me?.role) return <main className="mx-auto w-full max-w-xl px-4 py-6"><PageSkeleton /></main>;
+  if (loading || !user || me?.role) return <main className="mx-auto w-full max-w-4xl px-4 py-10"><PageSkeleton /></main>;
 
   const ageNum = Number(age);
   const patientReady =
@@ -51,6 +53,7 @@ export default function OnboardingPage() {
         ...(conditions as Record<Condition, 0 | 1>),
       });
       await refresh();
+      toast.success("Profile saved. Welcome!");
       router.replace("/dashboard");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save your profile.");
@@ -65,6 +68,7 @@ export default function OnboardingPage() {
     try {
       await api.registerDoctor(name.trim());
       await refresh();
+      toast.success("Your clinician account is ready.");
       router.replace("/doctor");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save your profile.");
@@ -81,20 +85,26 @@ export default function OnboardingPage() {
   );
 
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-6">
+    <main className="mx-auto w-full max-w-4xl px-4 py-10">
+      <div className="mb-8 flex flex-col items-center text-center">
+        <Link href="/" aria-label="Pneumonia Assistant home" className="rounded-xl">
+          <BrandMark className="size-16" />
+        </Link>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Set up your profile</h1>
+        <p className="mt-1 text-[15px] text-muted-foreground">This is asked once. You can change it later in your profile.</p>
+      </div>
       <Card>
-        <CardHeader>
-          <CardTitle>Set up your profile</CardTitle>
-          <CardDescription>This is asked once. You can change it later in your profile.</CardDescription>
-        </CardHeader>
         <CardContent>
           <Tabs defaultValue="patient">
-            <TabsList className="mb-5 grid w-full grid-cols-2">
+            <TabsList className="mx-auto mb-6 grid w-full max-w-md grid-cols-2">
               <TabsTrigger value="patient">I&apos;m monitoring my health</TabsTrigger>
               <TabsTrigger value="doctor">I&apos;m a doctor</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="patient" className="space-y-5">
+            <TabsContent value="patient" className="space-y-6">
+              <div className="grid gap-8 md:grid-cols-2">
+              <div className="space-y-4">
+              <p className="text-[13px] font-semibold tracking-wide text-muted-foreground uppercase">About you</p>
               {nameField}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
@@ -116,8 +126,12 @@ export default function OnboardingPage() {
                   </Select>
                 </div>
               </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Do you have any of these long-term conditions?</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[13px] font-semibold tracking-wide text-muted-foreground uppercase">
+                  Do you have any of these long-term conditions?
+                </p>
+                <ListGroup>
                 {CONDITIONS.map((c) => (
                   <YesNo
                     key={c}
@@ -127,18 +141,20 @@ export default function OnboardingPage() {
                     onChange={(v) => setConditions((s) => ({ ...s, [c]: v }))}
                   />
                 ))}
+                </ListGroup>
               </div>
-              <Button className="w-full" disabled={!patientReady || busy} onClick={savePatient}>
+              </div>
+              <Button className="w-full" size="lg" disabled={!patientReady || busy} onClick={savePatient}>
                 Save and continue
               </Button>
             </TabsContent>
 
-            <TabsContent value="doctor" className="space-y-5">
+            <TabsContent value="doctor" className="mx-auto max-w-md space-y-5">
               {nameField}
               <p className="text-sm text-muted-foreground">
                 Patients can link you from their profile using your sign-in email. You&apos;ll then see their results.
               </p>
-              <Button className="w-full" disabled={!name.trim() || busy} onClick={saveDoctor}>
+              <Button className="w-full" size="lg" disabled={!name.trim() || busy} onClick={saveDoctor}>
                 Continue as a doctor
               </Button>
             </TabsContent>

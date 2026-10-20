@@ -1,38 +1,56 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Info } from "lucide-react";
 
-/** A required yes/no question; value is null until answered. */
+import { cn } from "@/lib/utils";
+
+/** A required yes/no question as a list row with a segmented control; value is null until answered.
+ *  Put rows inside <ListGroup> to get the hairline separators. */
 export function YesNo({
   id,
   label,
+  hint,
   value,
   onChange,
 }: {
   id: string;
   label: string;
+  hint?: string;
   value: 0 | 1 | null;
   onChange: (v: 0 | 1) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border px-3 py-2.5">
-      <span className="text-sm">{label}</span>
-      <RadioGroup
-        className="flex gap-4"
-        value={value === null ? "" : String(value)}
-        onValueChange={(v) => onChange(v === "1" ? 1 : 0)}
-        aria-label={label}
-      >
-        <div className="flex items-center gap-1.5">
-          <RadioGroupItem id={`${id}-yes`} value="1" />
-          <Label htmlFor={`${id}-yes`} className="font-normal">Yes</Label>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <RadioGroupItem id={`${id}-no`} value="0" />
-          <Label htmlFor={`${id}-no`} className="font-normal">No</Label>
-        </div>
-      </RadioGroup>
+    <div className="flex min-h-11 flex-wrap items-center justify-between gap-x-3 gap-y-1.5 py-2">
+      <span className="flex items-center gap-1.5 text-sm">
+        <span id={`${id}-label`}>{label}</span>
+        {hint && (
+          <span title={hint} className="text-muted-foreground" aria-label={hint} role="img">
+            <Info className="size-3.5" />
+          </span>
+        )}
+      </span>
+      <div role="radiogroup" aria-labelledby={`${id}-label`} className="flex rounded-lg border bg-muted p-0.5">
+        {([1, 0] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            role="radio"
+            aria-checked={value === v}
+            onClick={() => onChange(v)}
+            className={cn(
+              "h-7 min-w-12 cursor-pointer rounded-md px-3 text-[13px] font-medium transition-colors",
+              value === v ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {v ? "Yes" : "No"}
+          </button>
+        ))}
+      </div>
     </div>
   );
+}
+
+/** A list of rows separated by hairlines. */
+export function ListGroup({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("divide-y divide-border", className)}>{children}</div>;
 }

@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins, Roboto_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 const robotoMono = Roboto_Mono({
@@ -17,13 +16,16 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pneumonia Risk Assistant",
-  description: "Home monitoring for chest infection risk. Guidance only, not a diagnosis.",
+  // Pages set their own title; it shows as "Summary · Pneumonia Assistant".
+  title: { template: "%s · Pneumonia Assistant", default: "Pneumonia Assistant" },
+  description:
+    "Home monitoring for chest infection risk: device readings, lab results and an assistant that explains them. Guidance only, not a diagnosis.",
+  applicationName: "Pneumonia Assistant",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${poppins.variable} ${robotoMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${robotoMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <AuthProvider>{children}</AuthProvider>
         <Toaster richColors position="top-center" />

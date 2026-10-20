@@ -4,8 +4,8 @@ import { AlertTriangle, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { PageSkeleton } from "@/components/app-shell";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, ErrorState, PageHeader, PageSkeleton } from "@/components/app-shell";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { BAND_INFO } from "@/lib/bands";
@@ -43,12 +43,12 @@ export default function DoctorHome() {
     })();
   }, []);
 
-  if (error) return <p className="text-destructive">{error}</p>;
+  if (error) return <ErrorState message={error} />;
   if (!rows) return <PageSkeleton />;
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">My patients</h1>
+    <>
+      <PageHeader title="My patients" />
       {rows.length === 0 ? (
         <Card>
           <CardHeader>
@@ -59,36 +59,38 @@ export default function DoctorHome() {
           </CardHeader>
         </Card>
       ) : (
-        <ul className="space-y-2">
-          {rows.map((r) => {
+        <ul className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+          {rows.map((r, i) => {
             const band = r.latest?.band;
             return (
-              <li key={r.id}>
-                <Link href={`/doctor/${r.id}`}>
-                  <Card className="py-0 transition-colors hover:bg-muted/50">
-                    <CardContent className="flex items-center gap-3 p-4">
-                      <span className={cn("size-3 rounded-full", band ? BAND_INFO[band].dot : "bg-muted")} aria-hidden />
-                      <div className="flex-1">
-                        <p className="font-medium">{r.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {band ? BAND_INFO[band].label : "No checks yet"}
-                          {r.latest && ` · ${new Date(r.latest.created_at).toLocaleDateString()}`}
-                        </p>
-                      </div>
-                      {r.status.alerts.length > 0 && (
-                        <span className="flex items-center gap-1 text-sm font-medium text-red-600">
-                          <AlertTriangle className="size-4" /> Critical reading
-                        </span>
-                      )}
-                      <ChevronRight className="size-4 text-muted-foreground" />
-                    </CardContent>
-                  </Card>
+              <li key={r.id} className="animate-rise" style={{ animationDelay: `${i * 40}ms` }}>
+                <Link
+                  href={`/doctor/${r.id}`}
+                  className="flex items-center gap-4 rounded-2xl surface p-4 transition-colors duration-200 hover:border-ring/50"
+                >
+                  <Avatar name={r.name} className="size-12 text-base" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[15px] font-semibold">{r.name}</p>
+                    <p className="mt-0.5 flex items-center gap-1.5 text-[15px] text-foreground/75">
+                      <span className={cn("size-2.5 rounded-full", band ? BAND_INFO[band].dot : "bg-muted")} aria-hidden />
+                      {band ? BAND_INFO[band].label : "No checks yet"}
+                    </p>
+                    {r.latest && (
+                      <p className="text-[13px] text-foreground/70">{new Date(r.latest.created_at).toLocaleDateString()}</p>
+                    )}
+                  </div>
+                  {r.status.alerts.length > 0 && (
+                    <span className="flex items-center gap-1 rounded-full bg-destructive/10 px-2.5 py-1 text-[13px] font-semibold text-destructive">
+                      <AlertTriangle className="size-3.5" /> Critical
+                    </span>
+                  )}
+                  <ChevronRight className="size-5 text-muted-foreground" />
                 </Link>
               </li>
             );
           })}
         </ul>
       )}
-    </div>
+    </>
   );
 }

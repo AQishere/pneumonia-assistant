@@ -1,18 +1,19 @@
 "use client";
 
-import { CircleCheck, FlaskConical } from "lucide-react";
+import { ClipboardList, Cpu, FlaskConical, HeartPulse, UserRound } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { PageHeader } from "@/components/app-shell";
 import { CriticalAlerts, StatusCard } from "@/components/status-card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardIcon, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { YesNo } from "@/components/yes-no";
+import { ListGroup, YesNo } from "@/components/yes-no";
 import { api } from "@/lib/api";
-import { BAND_INFO, CONDITION_LABELS, CONDITIONS, VITAL_INFO, VITALS } from "@/lib/bands";
+import { CONDITION_LABELS, CONDITIONS, VITAL_INFO, VITALS } from "@/lib/bands";
 import type { Condition, DemoInput, DemoResult, Sex, Vital } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -86,13 +87,13 @@ function parseValues(text: string): number[] | null {
 function Score({ label, p, threshold }: { label: string; p: number | null; threshold: number }) {
   const flagged = p !== null && p >= threshold;
   return (
-    <div className="rounded-lg border p-3">
-      <p className="text-xs text-muted-foreground">{label}</p>
+    <div className="rounded-xl bg-muted p-4">
+      <p className="text-[13px] font-medium text-muted-foreground">{label}</p>
       {p === null ? (
         <p className="mt-1 text-sm">Did not run</p>
       ) : (
         <>
-          <p className={cn("mt-1 text-2xl font-semibold", flagged ? "text-red-600" : "text-emerald-600")}>
+          <p className={cn("mt-1 text-2xl font-semibold", flagged ? "text-[#dc2626]" : "text-[#15803d]")}>
             {p.toFixed(3)}
           </p>
           <p className="text-xs text-muted-foreground">
@@ -104,37 +105,24 @@ function Score({ label, p, threshold }: { label: string; p: number | null; thres
   );
 }
 
-/** Demo page only: a Low band next to a critical alert. The shared StatusCard's "no concern" wording would
- *  contradict the alert, so this card replaces it here; the patient dashboard is unchanged. */
-function LowWithAlertCard() {
-  return (
-    <div className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 shadow-sm">
-      <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-full", BAND_INFO.Low.badge)}>
-        <CircleCheck className="size-4.5" aria-hidden />
-      </span>
-      <h2 className="font-semibold">Low pneumonia probability — see critical vital sign alert above.</h2>
-    </div>
-  );
-}
-
 const ZONES = {
-  green: { label: "Green: low risk", text: "Pneumonia unlikely on these numbers.", tone: "border-emerald-300 bg-emerald-50 dark:bg-emerald-950" },
+  green: { label: "Green: low risk", text: "Pneumonia unlikely on these numbers.", tone: "bg-[#16a34a]/10" },
   amber: {
     label: "Amber: uncertain",
     text: "Too close to call from vitals and labs. A chest X-ray would decide.",
-    tone: "border-amber-300 bg-amber-50 dark:bg-amber-950",
+    tone: "bg-[#ca8a04]/15",
   },
-  red: { label: "Red: high risk", text: "Pneumonia likely on these numbers.", tone: "border-red-300 bg-red-50 dark:bg-red-950" },
+  red: { label: "Red: high risk", text: "Pneumonia likely on these numbers.", tone: "bg-[#dc2626]/10" },
 };
 
-const BAR_FILL = { green: "bg-emerald-500", amber: "bg-amber-500", red: "bg-red-600" };
+const BAR_FILL = { green: "bg-[#16a34a]", amber: "bg-[#ca8a04]", red: "bg-[#dc2626]" };
 
 /** The Stage 2 risk score as a filled bar, coloured by its zone, with the amber zone marked on the track. */
 function RiskBar({ demo }: { demo: DemoResult["demo"] }) {
   const { pneumonia_percentage: pct, risk_zone: zone, amber_zone: amber } = demo;
   if (pct === null || zone === null) {
     return (
-      <p className="rounded-lg border border-dashed p-3 text-sm text-muted-foreground">
+      <p className="rounded-xl bg-muted p-4 text-sm text-muted-foreground">
         No Stage 2 percentage: Stage 2 inputs are missing (it needs labs and at least two readings per vital).
       </p>
     );
@@ -178,7 +166,7 @@ function Zone({ zone, amber }: { zone: DemoResult["demo"]["risk_zone"]; amber: [
   if (zone === null) return null;
   const z = ZONES[zone];
   return (
-    <div className={cn("rounded-lg border p-3", z.tone)}>
+    <div className={cn("rounded-xl p-4", z.tone)}>
       <p className="text-sm font-semibold">{z.label}</p>
       <p className="text-sm">{z.text}</p>
       <p className="mt-1 text-xs text-muted-foreground">
@@ -191,7 +179,7 @@ function Zone({ zone, amber }: { zone: DemoResult["demo"]["risk_zone"]; amber: [
 function FeatureTable({ title, features }: { title: string; features: Record<string, number> | null }) {
   if (!features) return null;
   return (
-    <details className="rounded-lg border p-3">
+    <details className="rounded-xl bg-muted p-4">
       <summary className="cursor-pointer text-sm font-medium">
         {title} ({Object.keys(features).length} features)
       </summary>
@@ -240,6 +228,7 @@ export default function DemoPage() {
           labs: labs as DemoInput["labs"],
         }),
       );
+      toast.success("The models ran on this patient. Results are below.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "The demo could not run.");
     } finally {
@@ -248,92 +237,82 @@ export default function DemoPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold">
-          <FlaskConical className="size-6" aria-hidden /> Demo Test
-        </h1>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        <span className="self-center text-sm text-muted-foreground">Fill with:</span>
-        {Object.keys(PRESETS).map((name) => (
-          <Button key={name} variant="outline" size="sm" onClick={() => setForm(PRESETS[name])}>
-            {name}
-          </Button>
-        ))}
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Vital signs</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {VITALS.map((v) => (
-                <div key={v} className="space-y-1.5">
-                  <Label htmlFor={`v-${v}`} className="text-xs">
-                    {VITAL_INFO[v].label} <span className="text-muted-foreground">({VITAL_INFO[v].unit})</span>
-                  </Label>
-                  <Input
-                    id={`v-${v}`}
-                    value={form.vitals[v]}
-                    onChange={(e) => set("vitals", { ...form.vitals, [v]: e.target.value })}
-                  />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Lab results</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3">
-              {LABS.map((l) => (
-                <div key={l.key} className="space-y-1.5">
-                  <Label htmlFor={`l-${l.key}`} className="text-xs">
-                    {l.label} <span className="text-muted-foreground">({l.unit})</span>
-                  </Label>
-                  <Input
-                    id={`l-${l.key}`}
-                    inputMode="decimal"
-                    value={form.labs[l.key]}
-                    onChange={(e) => set("labs", { ...form.labs, [l.key]: e.target.value })}
-                  />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+    <div className="space-y-6">
+      <PageHeader
+        title={
+          <span className="flex items-center gap-3">
+            <span className="flex size-9 items-center justify-center rounded-lg border bg-card text-[#7c3aed]">
+              <FlaskConical className="size-5" aria-hidden />
+            </span>
+            Demo Test
+          </span>
+        }
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[15px] text-muted-foreground">Fill with:</span>
+          {Object.keys(PRESETS).map((name) => (
+            <Button key={name} variant="outline" size="sm" onClick={() => setForm(PRESETS[name])}>
+              {name}
+            </Button>
+          ))}
         </div>
+      </PageHeader>
 
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Patient</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label htmlFor="age">Age</Label>
-                  <Input id="age" inputMode="numeric" value={form.age} onChange={(e) => set("age", e.target.value)} />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="sex">Sex</Label>
-                  <Select value={form.sex} onValueChange={(v) => set("sex", v as Sex)}>
-                    <SelectTrigger id="sex" className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                      <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+      {/* A 2x2 grid: cards in the same row share a height, so the edges line up. */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2.5">
+              <CardIcon color="#e11d48" icon={HeartPulse} /> Vital signs
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {VITALS.map((v) => (
+              <div key={v} className="space-y-1.5">
+                <Label htmlFor={`v-${v}`} className="flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: VITAL_INFO[v].color }}>
+                  {(() => {
+                    const Icon = VITAL_INFO[v].icon;
+                    return <Icon className="size-4" aria-hidden />;
+                  })()}
+                  {VITAL_INFO[v].label} <span className="font-normal text-muted-foreground">({VITAL_INFO[v].unit})</span>
+                </Label>
+                <Input
+                  id={`v-${v}`}
+                  value={form.vitals[v]}
+                  onChange={(e) => set("vitals", { ...form.vitals, [v]: e.target.value })}
+                />
               </div>
+            ))}
+          </CardContent>
+        </Card>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2.5">
+              <CardIcon color="#1d4ed8" icon={UserRound} /> Patient
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="age">Age</Label>
+                <Input id="age" inputMode="numeric" value={form.age} onChange={(e) => set("age", e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="sex">Sex</Label>
+                <Select value={form.sex} onValueChange={(v) => set("sex", v as Sex)}>
+                  <SelectTrigger id="sex" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <ListGroup>
               {CONDITIONS.map((c) => (
                 <YesNo
                   key={c}
@@ -343,14 +322,39 @@ export default function DemoPage() {
                   onChange={(v) => set("conditions", { ...form.conditions, [c]: v })}
                 />
               ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Today&apos;s answers</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+            </ListGroup>
+          </CardContent>
+        </Card>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2.5">
+              <CardIcon color="#7c3aed" icon={FlaskConical} /> Lab results
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-3">
+            {LABS.map((l) => (
+              <div key={l.key} className="space-y-1.5">
+                <Label htmlFor={`l-${l.key}`} className="text-xs">
+                  {l.label} <span className="text-muted-foreground">({l.unit})</span>
+                </Label>
+                <Input
+                  id={`l-${l.key}`}
+                  inputMode="decimal"
+                  value={form.labs[l.key]}
+                  onChange={(e) => set("labs", { ...form.labs, [l.key]: e.target.value })}
+                />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2.5">
+              <CardIcon color="#16a34a" icon={ClipboardList} /> Today&apos;s answers
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ListGroup>
               {ANSWERS.map((q) => (
                 <YesNo
                   key={q.key}
@@ -360,9 +364,9 @@ export default function DemoPage() {
                   onChange={(v) => set("answers", { ...form.answers, [q.key]: v })}
                 />
               ))}
-            </CardContent>
-          </Card>
-        </div>
+            </ListGroup>
+          </CardContent>
+        </Card>
       </div>
 
       <Button className="w-full" size="lg" disabled={busy} onClick={run}>
@@ -372,14 +376,12 @@ export default function DemoPage() {
       {result && (
         <div className="space-y-4">
           <CriticalAlerts notice={result.critical_notice} alerts={result.alerts} />
-          {result.band === "Low" && result.alerts.length > 0 ? (
-            <LowWithAlertCard />
-          ) : (
-            <StatusCard result={result} />
-          )}
+          <StatusCard result={result} alertActive={result.alerts.length > 0} />
           <Card>
             <CardHeader>
-              <CardTitle>Model details</CardTitle>
+              <CardTitle className="flex items-center gap-2.5">
+                <CardIcon color="#4f46e5" icon={Cpu} /> Model details
+              </CardTitle>
               <CardDescription>
                 Raw risk scores (not probabilities). Stage 2 only runs when Stage 1 flags the patient. A first positive
                 Stage 2 result below 0.70 shows as &quot;re-checking&quot; until a repeat confirms it.

@@ -1,21 +1,21 @@
 "use client";
 
-import { Upload } from "lucide-react";
+import { FlaskConical, Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardIcon, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/lib/api";
-import type { Labs } from "@/lib/types";
+import { LAB_COLOR } from "@/lib/bands";
 
 const FIELDS = [
-  { key: "wbc", label: "White blood cells (WBC)", unit: "×10⁹/L" },
-  { key: "neutrophils", label: "Neutrophils", unit: "%" },
-  { key: "lymphocytes", label: "Lymphocytes", unit: "%" },
-  { key: "crp", label: "C-reactive protein (CRP)", unit: "mg/L" },
+  { key: "wbc", label: "WBC", full: "White blood cells", unit: "×10⁹/L" },
+  { key: "neutrophils", label: "Neutrophils", full: "", unit: "%" },
+  { key: "lymphocytes", label: "Lymphocytes", full: "", unit: "%" },
+  { key: "crp", label: "CRP", full: "C-reactive protein", unit: "mg/L" },
 ] as const;
 type Key = (typeof FIELDS)[number]["key"];
 
@@ -34,7 +34,8 @@ function parseCsv(text: string): Partial<Record<Key, string>> {
   return out;
 }
 
-export function LabsCard({ patientId, labs, onSaved }: { patientId: string; labs: Labs | null; onSaved: () => void }) {
+/** Enter or upload new lab results; the latest ones show in the Lab results widget. */
+export function LabsCard({ patientId, onSaved }: { patientId: string; onSaved: () => void }) {
   const [values, setValues] = useState<Record<Key, string>>({ wbc: "", neutrophils: "", lymphocytes: "", crp: "" });
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -73,35 +74,38 @@ export function LabsCard({ patientId, labs, onSaved }: { patientId: string; labs
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Lab results</CardTitle>
-        {labs && (
-          <CardDescription>
-            {`Latest from ${new Date(labs.taken_at).toLocaleDateString()}: WBC ${labs.wbc}, neutrophils ${labs.neutrophils}%, lymphocytes ${labs.lymphocytes}%, CRP ${labs.crp} mg/L.`}
-          </CardDescription>
-        )}
+        <CardTitle className="flex items-center gap-2.5">
+          <CardIcon color={LAB_COLOR} icon={FlaskConical} />
+          Add Lab Results
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="grid grid-cols-2 gap-3">
+      <CardContent className="space-y-4">
+        <div className="divide-y divide-border">
           {FIELDS.map((f) => (
-            <div key={f.key} className="space-y-1.5">
-              <Label htmlFor={`lab-${f.key}`} className="text-xs">
-                {f.label} <span className="text-muted-foreground">({f.unit})</span>
+            <div key={f.key} className="flex items-center justify-between gap-3 py-2.5">
+              <Label htmlFor={`lab-${f.key}`} className="min-w-0 flex-col items-start gap-0 text-[15px] font-normal">
+                {f.label}
+                {f.full && <span className="text-[13px] text-muted-foreground">{f.full}</span>}
               </Label>
-              <Input
-                id={`lab-${f.key}`}
-                inputMode="decimal"
-                value={values[f.key]}
-                onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-              />
+              <div className="flex h-9 w-28 shrink-0 items-center rounded-md border border-input bg-card pr-2.5 shadow-xs transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20">
+                <Input
+                  id={`lab-${f.key}`}
+                  inputMode="decimal"
+                  value={values[f.key]}
+                  onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
+                  className="h-8 min-w-0 border-0 bg-transparent px-2.5 text-right tabular-nums shadow-none focus-visible:border-0 focus-visible:ring-0"
+                />
+                <span className="shrink-0 text-[13px] text-muted-foreground">{f.unit}</span>
+              </div>
             </div>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <Button disabled={!ready || busy} onClick={save}>
-            Save results
+            Save Results
           </Button>
-          <Button variant="outline" onClick={() => fileRef.current?.click()}>
-            <Upload className="size-4" /> Load from file (.csv)
+          <Button variant="outline" onClick={() => fileRef.current?.click()} title="Load results from a .csv file">
+            <Plus className="size-4" /> Upload
           </Button>
           <input
             ref={fileRef}

@@ -7,22 +7,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-poppins);
-  --font-mono: var(--font-roboto-mono);
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
-  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.06);
-  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.08);
-  --shadow-coral: 0 2px 8px rgb(255 107 107 / 0.2);
-  --shadow-teal: 0 2px 8px rgb(78 205 196 / 0.2);
-  --shadow-sunny: 0 2px 8px rgb(255 230 109 / 0.25);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.03);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.1);
   --color-primary-hover: var(--primary-hover);
-  --color-secondary-hover: var(--secondary-hover);
-  --color-tertiary: var(--tertiary);
-  --color-info: var(--info);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
   --color-input-hover: var(--input-hover);
-  --font-heading: var(--font-sans);
+  --color-fill: var(--fill);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -52,74 +45,53 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
-  --radius-xl: 1rem;
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.625rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
+  --radius-4xl: 1.25rem;
 }
 
 :root {
-  /* BounceBox (see bouncebox-DESIGN.md): coral primary, teal secondary, sunshine yellow tertiary. */
-  --background: #ffffff;
-  --foreground: #2d2d2d;
+  /* Clinical neutral: slate greys, one brand blue; colour is kept for status (alerts, risk, out-of-range). */
+  --background: #f8fafc;
+  --foreground: #0f172a;
   --card: #ffffff;
-  --card-foreground: #2d2d2d;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
-  --popover-foreground: #2d2d2d;
-  --primary: #ff6b6b;
-  --primary-hover: #e85d5d;
+  --popover-foreground: #0f172a;
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
   --primary-foreground: #ffffff;
-  --secondary: #4ecdc4;
-  --secondary-hover: #3dbeb5;
-  --secondary-foreground: #ffffff;
-  --tertiary: #ffe66d;
-  --info: #60a5fa;
-  --success: #4ecdc4;
-  --warning: #ffe66d;
-  --muted: #f9fafb;
-  --muted-foreground: #6b7280;
-  --accent: rgb(255 107 107 / 0.15);
-  --accent-foreground: #ff6b6b;
-  --destructive: #ef4444;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --input-hover: #a1a1aa;
-  --ring: #ff6b6b;
-  --chart-1: #4ecdc4;
-  --chart-2: #ff6b6b;
-  --chart-3: #60a5fa;
-  --chart-4: #ffe66d;
-  --chart-5: #2d2d2d;
-  --radius: 0.875rem;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --fill: #f8fafc;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --accent: #eff6ff;
+  --accent-foreground: #1e3a8a;
+  --destructive: #dc2626;
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --input-hover: #94a3b8;
+  --ring: #3b82f6;
+  --chart-1: #1d4ed8;
+  --chart-2: #0891b2;
+  --chart-3: #64748b;
+  --chart-4: #93c5fd;
+  --chart-5: #0f172a;
+  --radius: 0.5rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #2d2d2d;
-  --sidebar-primary: #ff6b6b;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #1d4ed8;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgb(255 107 107 / 0.15);
-  --sidebar-accent-foreground: #ff6b6b;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #ff6b6b;
-}
-
-.dark {
-  --background: #1f1f23;
-  --foreground: #f4f4f5;
-  --card: #2a2a30;
-  --card-foreground: #f4f4f5;
-  --popover: #2a2a30;
-  --popover-foreground: #f4f4f5;
-  --muted: #2a2a30;
-  --muted-foreground: #a1a1aa;
-  --border: #3f3f46;
-  --input: #3f3f46;
-  --input-hover: #71717a;
-  --chart-5: #f4f4f5;
-  --sidebar: #2a2a30;
-  --sidebar-foreground: #f4f4f5;
-  --sidebar-border: #3f3f46;
+  --sidebar-accent: #eff6ff;
+  --sidebar-accent-foreground: #1e3a8a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #3b82f6;
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04);
 }
 
 @layer base {
@@ -129,12 +101,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Nothing should ever scroll sideways; wide content (tables, charts) scrolls inside its own box. */
+  html,
+  body {
+    overflow-x: clip;
+  }
   html {
     @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv11", "tnum";
+  }
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 }
 
-/* Chat: WhatsApp-style typing dots and message entrance. */
+/* Chat: typing dots and message entrance; widgets rise in on load. */
 @keyframes typing-dot {
   0%, 60%, 100% {
     transform: translateY(0);
@@ -157,18 +141,46 @@
   }
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 @layer utilities {
+  /* White cards with a hairline border. */
+  .surface {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+  }
+  .surface-strong {
+    background-color: var(--sidebar);
+    border: 1px solid var(--sidebar-border);
+    box-shadow: var(--shadow-soft);
+  }
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
   .animate-typing-dot {
     animation: typing-dot 1.2s ease-in-out infinite;
   }
   .animate-message-in {
     animation: message-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
+  .animate-rise {
+    animation: message-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-typing-dot,
-  .animate-message-in {
+  .animate-message-in,
+  .animate-rise,
+  .animate-float {
     animation: none;
   }
 }

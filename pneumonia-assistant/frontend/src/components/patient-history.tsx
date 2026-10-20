@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { PageSkeleton } from "@/components/app-shell";
+import { ErrorState, PageSkeleton } from "@/components/app-shell";
 import { BandTimeline, VitalCharts } from "@/components/history-charts";
 import { api } from "@/lib/api";
 import type { AssessmentRow, Reading } from "@/lib/types";
@@ -21,10 +21,10 @@ export function PatientHistory({ patientId }: { patientId: string }) {
       .catch((e) => setError(e instanceof Error ? e.message : "Could not load history."));
   }, [patientId]);
 
-  if (error) return <p className="text-destructive">{error}</p>;
+  if (error) return <ErrorState message={error} />;
   if (!rows || !readings) return <PageSkeleton />;
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <BandTimeline rows={rows} />
       <VitalCharts readings={readings} />
     </div>

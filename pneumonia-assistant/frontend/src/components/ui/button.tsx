@@ -4,17 +4,15 @@ import { cn } from "cn"
 import { Slot } from "radix-ui"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border-transparent bg-clip-padding font-semibold whitespace-nowrap transition-all duration-200 outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/20 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none aria-invalid:ring-3 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 cursor-pointer items-center justify-center rounded-lg border-transparent bg-clip-padding font-medium whitespace-nowrap transition-all duration-200 outline-none select-none focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none aria-invalid:ring-3 aria-invalid:ring-destructive/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-coral hover:bg-primary-hover",
-        outline:
-          "border border-primary/40 bg-transparent text-primary hover:border-primary hover:bg-primary/10 aria-expanded:bg-primary/10",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-teal hover:bg-secondary-hover aria-expanded:bg-secondary-hover",
-        ghost: "text-primary hover:bg-primary/10 aria-expanded:bg-primary/10",
-        destructive: "bg-destructive text-white hover:bg-[#dc2626] focus-visible:ring-destructive/25",
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+        outline: "border border-border bg-card text-foreground shadow-xs hover:bg-muted aria-expanded:bg-muted",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-slate-200 aria-expanded:bg-slate-200",
+        ghost: "text-muted-foreground hover:bg-muted hover:text-foreground aria-expanded:bg-muted",
+        destructive: "bg-destructive text-white hover:bg-[#b91c1c] focus-visible:ring-destructive/25",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
