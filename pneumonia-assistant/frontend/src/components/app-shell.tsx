@@ -38,20 +38,20 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
-          <Link href={role === "doctor" ? "/doctor" : "/dashboard"} className="flex items-center gap-2 font-bold text-primary">
-            <BrandMark className="size-7" />
+      <header className="sticky top-0 z-30 border-b-2 bg-background">
+        <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-4">
+          <Link href={role === "doctor" ? "/doctor" : "/dashboard"} className="flex shrink-0 items-center gap-2 text-lg font-bold">
+            <BrandMark className="size-9" />
             <span>Pneumonia Risk Assistant</span>
           </Link>
-          <nav className="flex flex-1 gap-1 overflow-x-auto">
+          <nav className="flex flex-1 gap-1 overflow-x-auto [scrollbar-width:none]">
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-primary",
-                  pathname.startsWith(item.href) && "bg-primary text-primary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
+                  "flex min-h-11 items-center rounded-full px-3.5 text-sm font-semibold whitespace-nowrap text-foreground transition-colors duration-200 hover:bg-[#fff5f5]",
+                  pathname.startsWith(item.href) && "bg-primary/15 text-primary hover:bg-primary/15",
                 )}
               >
                 {item.label}
@@ -68,7 +68,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
         {error && <p className="mb-4 text-sm text-destructive">Server problem: {error}</p>}
         {ready ? children : <PageSkeleton />}
       </main>
-      <footer className="border-t bg-background/60 py-4 text-center text-xs text-muted-foreground">
+      <footer className="border-t-2 border-dashed px-4 py-5 text-center text-xs text-muted-foreground">
         Guidance only. This app cannot diagnose pneumonia or replace a doctor. In an emergency, call Rescue 1122.
       </footer>
     </div>

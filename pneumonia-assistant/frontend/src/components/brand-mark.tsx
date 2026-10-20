@@ -2,12 +2,12 @@ import { Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-/** The app's logo: a white cross on a blue circle (matches src/app/icon.svg). */
+/** The app's logo: a white cross on a coral circle (matches src/app/icon.svg). */
 export function BrandMark({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent to-primary text-primary-foreground shadow-sm",
+        "inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-coral",
         className,
       )}
       aria-hidden

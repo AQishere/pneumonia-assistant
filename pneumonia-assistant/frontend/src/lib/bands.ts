@@ -5,7 +5,7 @@ export const BAND_INFO: Record<Band, { label: string; summary: string; tone: str
   Low: {
     label: "No concern right now",
     summary: "Your latest check found no signs of concern.",
-    tone: "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-100",
+    tone: "border-[#a7f3d0] bg-[#d1fae5] text-[#166534]",
     dot: "bg-emerald-500",
   },
   Pending: {
@@ -17,7 +17,7 @@ export const BAND_INFO: Record<Band, { label: string; summary: string; tone: str
   Moderate: {
     label: "Keep an eye on it",
     summary: "Some readings are outside the usual range.",
-    tone: "border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-100",
+    tone: "border-[#fde68a] bg-[#fef9c3] text-[#854d0e]",
     dot: "bg-amber-500",
   },
   Watch: {
@@ -29,7 +29,7 @@ export const BAND_INFO: Record<Band, { label: string; summary: string; tone: str
   High: {
     label: "See a doctor today",
     summary: "Your results suggest a raised risk of a chest infection.",
-    tone: "border-red-200 bg-red-50 text-red-950 dark:border-red-900 dark:bg-red-950 dark:text-red-100",
+    tone: "border-[#fecaca] bg-[#fee2e2] text-[#991b1b]",
     dot: "bg-red-600",
   },
 };

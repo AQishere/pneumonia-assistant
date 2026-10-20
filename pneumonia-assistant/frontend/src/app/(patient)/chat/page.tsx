@@ -58,8 +58,8 @@ export default function ChatPage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-      <Card className="flex h-[70vh] flex-col py-0">
-        <CardContent className="flex-1 space-y-3 overflow-y-auto p-4" aria-live="polite">
+      <Card className="flex h-[70vh] flex-col py-0 hover:border-border hover:shadow-sm">
+        <CardContent className="flex-1 space-y-4 overflow-y-auto p-6" aria-live="polite">
           {messages.map((m, i) => (
             <div
               key={i}
@@ -68,14 +68,14 @@ export default function ChatPage() {
                 m.role === "user" ? "justify-end" : "justify-start",
               )}
             >
-              {m.role === "assistant" && <BrandMark className="mb-0.5 size-7" />}
+              {m.role === "assistant" && <BrandMark className="mb-0.5 size-9" />}
               <div
                 className={cn(
-                  "max-w-[80%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm",
+                  "max-w-[80%] whitespace-pre-wrap rounded-3xl px-5 py-3 text-base shadow-sm",
                   m.role === "user"
-                    ? "rounded-br-md bg-gradient-to-br from-primary to-[color-mix(in_oklch,var(--primary),var(--accent)_45%)] text-primary-foreground"
-                    : "rounded-bl-md bg-card ring-1 ring-border",
-                  m.error && "bg-destructive/10 text-destructive ring-destructive/20",
+                    ? "rounded-br-lg bg-primary text-primary-foreground"
+                    : "rounded-bl-lg border-2 border-border bg-card",
+                  m.error && "border-[#fecaca] bg-[#fee2e2] text-[#991b1b]",
                 )}
               >
                 {m.text}
@@ -85,16 +85,16 @@ export default function ChatPage() {
           {busy && <TypingIndicator />}
           <div ref={endRef} />
         </CardContent>
-        <div className="border-t p-3">
+        <div className="border-t-2 border-dashed p-4">
           {messages.length === 1 && (
-            <div className="mb-2 flex flex-wrap gap-2">
+            <div className="mb-3 flex flex-wrap gap-2">
               {SUGGESTIONS.map((s) => (
                 <Button
                   key={s}
                   variant="outline"
                   size="sm"
                   onClick={() => send(s)}
-                  className="animate-message-in border-primary/25 text-primary hover:-translate-y-0.5 hover:border-primary/50 hover:bg-secondary hover:text-primary"
+                  className="animate-message-in hover:-translate-y-0.5"
                   style={{ animationDelay: `${150 + SUGGESTIONS.indexOf(s) * 80}ms` }}
                 >
                   {s}
@@ -120,7 +120,7 @@ export default function ChatPage() {
               }}
               placeholder="Type your message"
               rows={1}
-              className="min-h-10 resize-none rounded-2xl transition-shadow duration-200 focus-visible:shadow-[0_0_0_4px_color-mix(in_oklch,var(--ring),transparent_80%)]"
+              className="min-h-13 resize-none"
               aria-label="Message"
             />
             <Button
@@ -128,7 +128,7 @@ export default function ChatPage() {
               size="icon-lg"
               disabled={busy || !input.trim()}
               aria-label="Send"
-              className="size-10 transition-transform duration-200 hover:scale-105 active:scale-95"
+              className="size-13 hover:scale-105 active:scale-95"
             >
               <Send className="size-4" />
             </Button>
@@ -143,7 +143,7 @@ export default function ChatPage() {
             <StatusCard result={result} />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Your latest result will appear here when the assistant runs a check.</p>
+          <p className="text-base text-muted-foreground">Your latest result will appear here when the assistant runs a check.</p>
         )}
       </aside>
     </div>
@@ -154,12 +154,12 @@ export default function ChatPage() {
 function TypingIndicator() {
   return (
     <div className="flex animate-message-in items-end gap-2" role="status">
-      <BrandMark className="mb-0.5 size-7" />
-      <div className="flex items-center gap-1 rounded-2xl rounded-bl-md bg-card px-4 py-3.5 shadow-sm ring-1 ring-border">
-        {[0, 1, 2].map((i) => (
+      <BrandMark className="mb-0.5 size-9" />
+      <div className="flex items-center gap-1.5 rounded-3xl rounded-bl-lg border-2 border-border bg-card px-5 py-4 shadow-sm">
+        {["bg-primary", "bg-secondary", "bg-tertiary"].map((color, i) => (
           <span
-            key={i}
-            className="size-2 animate-typing-dot rounded-full bg-primary/70"
+            key={color}
+            className={cn("size-2.5 animate-typing-dot rounded-full", color)}
             style={{ animationDelay: `${i * 0.18}s` }}
           />
         ))}

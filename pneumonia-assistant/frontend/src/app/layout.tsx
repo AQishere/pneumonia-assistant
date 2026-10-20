@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Montserrat } from "next/font/google";
+import { Poppins, Roboto_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${poppins.variable} ${robotoMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <AuthProvider>{children}</AuthProvider>
         <Toaster richColors position="top-center" />

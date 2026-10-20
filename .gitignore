@@ -19,3 +19,4 @@ serviceAccount*.json
 # Local working notes
 AGENT_BUILD_SPEC.md
 pneumonia-assistant/progress.md
+bouncebox-DESIGN.md
