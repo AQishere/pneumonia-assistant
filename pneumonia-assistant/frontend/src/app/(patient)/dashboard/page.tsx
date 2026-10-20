@@ -42,7 +42,7 @@ export default function DashboardPage() {
   const notice = result?.critical_notice ?? status.critical_notice;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Hello, {status.display_name.split(" ")[0]}</h1>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
         <ReadingTiles status={status} />
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <QuickCheck
           patientId={id}
           onResult={(r) => {

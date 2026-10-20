@@ -1,6 +1,6 @@
 "use client";
 
-import { FlaskConical } from "lucide-react";
+import { CircleCheck, FlaskConical } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -106,14 +106,13 @@ function Score({ label, p, threshold }: { label: string; p: number | null; thres
 
 /** Demo page only: a Low band next to a critical alert. The shared StatusCard's "no concern" wording would
  *  contradict the alert, so this card replaces it here; the patient dashboard is unchanged. */
-function LowWithAlertCard({ disclaimer }: { disclaimer: string }) {
+function LowWithAlertCard() {
   return (
-    <div className={cn("rounded-xl border p-5", BAND_INFO.Low.tone)}>
-      <div className="flex items-center gap-2">
-        <span className={cn("size-3 rounded-full", BAND_INFO.Low.dot)} aria-hidden />
-        <h2 className="text-lg font-semibold">Low pneumonia probability — see critical vital sign alert above.</h2>
-      </div>
-      <p className="mt-3 text-xs opacity-75">{disclaimer}</p>
+    <div className="flex items-center gap-3.5 rounded-2xl border bg-card p-4 shadow-sm">
+      <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-full", BAND_INFO.Low.badge)}>
+        <CircleCheck className="size-4.5" aria-hidden />
+      </span>
+      <h2 className="font-semibold">Low pneumonia probability — see critical vital sign alert above.</h2>
     </div>
   );
 }
@@ -249,7 +248,7 @@ export default function DemoPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
         <h1 className="flex items-center gap-2 text-2xl font-semibold">
           <FlaskConical className="size-6" aria-hidden /> Demo Test
@@ -265,8 +264,8 @@ export default function DemoPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Vital signs</CardTitle>
@@ -309,7 +308,7 @@ export default function DemoPage() {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Patient</CardTitle>
@@ -374,7 +373,7 @@ export default function DemoPage() {
         <div className="space-y-4">
           <CriticalAlerts notice={result.critical_notice} alerts={result.alerts} />
           {result.band === "Low" && result.alerts.length > 0 ? (
-            <LowWithAlertCard disclaimer={result.disclaimer} />
+            <LowWithAlertCard />
           ) : (
             <StatusCard result={result} />
           )}

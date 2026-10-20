@@ -35,7 +35,7 @@ export default function DoctorPatientPage() {
   const conditions = CONDITIONS.filter((c) => status.history_flags[c] === 1).map((c) => CONDITION_LABELS[c]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <Link href="/doctor" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" /> All patients
       </Link>

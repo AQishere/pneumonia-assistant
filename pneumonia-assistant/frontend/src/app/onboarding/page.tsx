@@ -34,7 +34,7 @@ export default function OnboardingPage() {
     else if (me?.role) router.replace(me.role === "doctor" ? "/doctor" : "/dashboard");
   }, [loading, user, me, router]);
 
-  if (loading || !user || me?.role) return <main className="mx-auto w-full max-w-xl px-4 py-10"><PageSkeleton /></main>;
+  if (loading || !user || me?.role) return <main className="mx-auto w-full max-w-xl px-4 py-6"><PageSkeleton /></main>;
 
   const ageNum = Number(age);
   const patientReady =
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
   );
 
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-10">
+    <main className="mx-auto w-full max-w-xl px-4 py-6">
       <Card>
         <CardHeader>
           <CardTitle>Set up your profile</CardTitle>

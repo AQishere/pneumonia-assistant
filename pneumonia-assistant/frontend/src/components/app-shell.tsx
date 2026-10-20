@@ -64,7 +64,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
           </Button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-4">
         {error && <p className="mb-4 text-sm text-destructive">Server problem: {error}</p>}
         {ready ? children : <PageSkeleton />}
       </main>

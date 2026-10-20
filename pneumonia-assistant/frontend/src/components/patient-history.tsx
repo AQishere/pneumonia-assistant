@@ -24,7 +24,7 @@ export function PatientHistory({ patientId }: { patientId: string }) {
   if (error) return <p className="text-destructive">{error}</p>;
   if (!rows || !readings) return <PageSkeleton />;
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <BandTimeline rows={rows} />
       <VitalCharts readings={readings} />
     </div>

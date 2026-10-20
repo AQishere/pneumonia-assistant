@@ -57,8 +57,8 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-      <Card className="flex h-[70vh] flex-col py-0 hover:border-border hover:shadow-sm">
+    <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
+      <Card className="flex h-[calc(100dvh-9rem)] min-h-96 flex-col py-0 hover:border-border hover:shadow-sm">
         <CardContent className="flex-1 space-y-3 overflow-y-auto p-4" aria-live="polite">
           {messages.map((m, i) => (
             <div

@@ -1,6 +1,5 @@
 import { AlertTriangle, Clock } from "lucide-react";
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BAND_INFO } from "@/lib/bands";
 import type { Alert as AlertT, AssessResult, Band } from "@/lib/types";
@@ -9,18 +8,22 @@ import { cn } from "@/lib/utils";
 export function CriticalAlerts({ notice, alerts }: { notice: string | null; alerts: AlertT[] }) {
   if (!alerts.length) return null;
   return (
-    <Alert variant="destructive" className="border-red-300 bg-red-50 dark:bg-red-950">
-      <AlertTriangle />
-      <AlertTitle>Needs attention now</AlertTitle>
-      <AlertDescription>
-        <p>{notice}</p>
-        <ul className="mt-2 list-disc pl-5">
+    <div role="alert" className="flex gap-3.5 rounded-2xl border border-red-200 bg-card p-4 shadow-sm">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#fee2e2] text-[#991b1b]">
+        <AlertTriangle className="size-4.5" aria-hidden />
+      </span>
+      <div className="min-w-0 flex-1 space-y-1">
+        <h2 className="font-semibold text-[#991b1b]">Needs attention now</h2>
+        {notice && <p className="text-sm text-muted-foreground">{notice}</p>}
+        <ul className="flex flex-wrap gap-1.5 pt-1">
           {alerts.map((a) => (
-            <li key={a.code}>{a.message}</li>
+            <li key={a.code} className="rounded-full bg-[#fee2e2] px-2.5 py-1 text-xs font-medium text-[#991b1b]">
+              {a.message}
+            </li>
           ))}
         </ul>
-      </AlertDescription>
-    </Alert>
+      </div>
+    </div>
   );
 }
 
@@ -53,29 +56,32 @@ export function StatusCard({ result, band, at }: { result?: AssessResult | null;
     );
   }
   const info = BAND_INFO[b];
+  const checked = at ?? result?.assessed_at;
   return (
-    <div className={cn("rounded-xl border p-5", info.tone)}>
-      <div className="flex items-center gap-2">
-        <span className={cn("size-3 rounded-full", info.dot)} aria-hidden />
-        <h2 className="text-lg font-semibold">{info.label}</h2>
+    <div className="flex gap-3.5 rounded-2xl border bg-card p-4 shadow-sm">
+      <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-full", info.badge)}>
+        <info.icon className="size-4.5" aria-hidden />
+      </span>
+      <div className="min-w-0 flex-1 space-y-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+          <h2 className="font-semibold">{info.label}</h2>
+          {checked && <span className="text-xs text-muted-foreground">{when(checked)}</span>}
+        </div>
+        <p className="text-sm text-muted-foreground">{info.summary}</p>
+        {result?.recommendation && <p className="pt-1 text-sm font-medium">{result.recommendation}</p>}
+        {b === "Watch" && result?.persistence?.reassess_after && (
+          <p className="flex items-center gap-1.5 pt-1 text-sm">
+            <Clock className="size-4" aria-hidden /> Re-check after {when(result.persistence.reassess_after)}.
+          </p>
+        )}
+        {!!result?.missing?.length && (
+          <ul className="list-disc space-y-0.5 pt-1 pl-5 text-sm">
+            {result.missing.map((m) => (
+              <li key={m.item}>{m.message}</li>
+            ))}
+          </ul>
+        )}
       </div>
-      <p className="mt-1 text-sm opacity-90">{info.summary}</p>
-      {result?.recommendation && <p className="mt-3 font-medium">{result.recommendation}</p>}
-      {b === "Watch" && result?.persistence?.reassess_after && (
-        <p className="mt-2 flex items-center gap-1.5 text-sm">
-          <Clock className="size-4" aria-hidden /> Re-check after {when(result.persistence.reassess_after)}.
-        </p>
-      )}
-      {!!result?.missing?.length && (
-        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-          {result.missing.map((m) => (
-            <li key={m.item}>{m.message}</li>
-          ))}
-        </ul>
-      )}
-      {(at || result?.assessed_at) && (
-        <p className="mt-3 text-xs opacity-75">Checked {when(at ?? result?.assessed_at)}.</p>
-      )}
     </div>
   );
 }
