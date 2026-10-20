@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 from agent.guards import alerts_first, find_stated_readings, nudge_for
 from agent.tools import TOOLS, ReadingProvenance, ToolExecutor
 
-SYSTEM_PROMPT = (Path(__file__).resolve().parent / "system_prompt.md").read_text(encoding="utf-8")
+SYSTEM_PROMPT = (Path(__file__).resolve().parent / "system_prompt.txt").read_text(encoding="utf-8")
 
 PROVIDERS = {
     # provider: (API key variable, base URL)

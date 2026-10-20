@@ -1,6 +1,6 @@
 """Phase 4, offline: tool validation, tool -> API calls, and the agent loop with a fake LLM client.
 
-Live conversations against the LLM are in tests/agent_scenarios.md / run_agent_scenarios.py.
+Live conversations against the LLM are in tests/run_agent_scenarios.py.
 """
 
 import json

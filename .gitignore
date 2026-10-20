@@ -20,3 +20,7 @@ serviceAccount*.json
 AGENT_BUILD_SPEC.md
 pneumonia-assistant/progress.md
 bouncebox-DESIGN.md
+
+# Markdown: only README.md files go on GitHub
+*.md
+!README.md
