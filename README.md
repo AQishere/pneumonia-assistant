@@ -7,6 +7,9 @@ language and tells them what to do. Users can link a doctor who sees their resul
 **Guidance only, not a diagnosis.** The training data is MIMIC-derived: only synthetic demo
 patients are ever stored.
 
+**Live:** web app <https://pneumonia-assistant.vercel.app> · API health check
+<https://pneumonia-assistant-api.vercel.app/health>
+
 ```
 Patient ─▶ Next.js app ──Firebase sign-in token──▶ FastAPI ──▶ Firestore
    │            │                                     │ validation, safety alerts,
@@ -18,12 +21,28 @@ Anything that must always happen (range checks, alerts, time windows, which stag
 advice text, who may see which record) lives in Python. The LLM only talks to the user and relays
 results; its prompt rules are a second layer of defence, and code guards stop it inventing readings.
 
+## Repository layout
+
+| Path | What it is |
+|---|---|
+| `pneumonia_two_stage_pipeline.ipynb` | Original notebook: data cleaning, Stage 1 and Stage 2 training |
+| `pneumonia-assistant/api/` | FastAPI backend: validation, safety alerts, features, models, Firestore |
+| `pneumonia-assistant/agent/` | Gemini assistant: system prompt, tools, guards |
+| `pneumonia-assistant/frontend/` | Next.js web app (patient and doctor pages) |
+| `pneumonia-assistant/models/` | Trained models and their metrics |
+| `pneumonia-assistant/training/` | Training scripts and experiments |
+| `pneumonia-assistant/tests/` | Offline tests and live agent scenarios |
+
+The MIMIC-derived CSVs (`data/`) are not in the repository: the data use agreement forbids
+sharing them.
+
 ## Setup
 
-From this folder, using the project's `.venv` (the one the notebook used, so scikit-learn
-matches):
+From the `pneumonia-assistant/` folder, using the project's `.venv` (the one the notebook used,
+so scikit-learn matches):
 
 ```powershell
+cd pneumonia-assistant
 ..\.venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt   # requirements.txt alone is what the deployed API needs
 copy .env.example .env      # then fill in API_KEY, GEMINI_API_KEY, Firebase settings
@@ -38,6 +57,8 @@ Add app (Web). It is public by design; the API key in `.env` is never sent to th
 
 ## Run
 
+From `pneumonia-assistant/`:
+
 ```powershell
 # 1. API (with DB_BACKEND=memory it seeds the demo patients on start)
 uvicorn api.main:create_app --factory --port 8000
@@ -51,6 +72,19 @@ python -m agent.chat --show-tools
 
 For Firestore, set `DB_BACKEND=firestore` and `FIREBASE_CREDENTIALS` (service-account JSON
 path), then load the demo patients with `python seed_demo_data.py`.
+
+## Deployment
+
+Both parts run on Vercel and redeploy on every push to `main`:
+
+- **Web app:** project root `pneumonia-assistant/frontend`; env: `NEXT_PUBLIC_API_URL` and the
+  `NEXT_PUBLIC_FIREBASE_*` web config.
+- **API:** project root `pneumonia-assistant`, entrypoint `app.py`, settings in `vercel.json`. Env:
+  `API_KEY`, `GEMINI_API_KEY`, `FIREBASE_CREDENTIALS_JSON` (the service-account file's contents),
+  `FIREBASE_PROJECT_ID`, `DB_BACKEND=firestore`, `LLM_PROVIDER`, `LLM_MODEL`, `FRONTEND_ORIGINS`,
+  and `VERCEL_SUPPORT_LARGE_FUNCTIONS=1` (the bundle is ~670 MB).
+- **Cold starts:** models load on first use, the web app calls `/ping` on load, and
+  `.github/workflows/keep-api-warm.yml` pings `/health` every 5 minutes.
 
 ## API (main routes)
 
@@ -127,6 +161,11 @@ directions (`train_stage2_cost`), two-step cost training (`train_stage2_sequenti
 labs-complete patients only (`labs_only_experiment`), dropping CRP (`drop_crp_experiment`),
 trends / calibration / uncertain band (`improvements_experiment`), SIRS, ROX, splines and MICE
 (`feature_engineering_experiment`).
+
+**Feature importance** (`stage2_feature_importance`, results in `models/stage2_v2_importance.csv`):
+respiratory distress dominates (test AUC drops 0.077 when shuffled), then mean breathing rate
+(0.019), temperature and the labs (CRP, NLR). Of the six conditions only COPD has a noticeable
+effect; the others are near zero, likely because the controls are also hospital inpatients.
 
 ## Caveats (for the report)
 
