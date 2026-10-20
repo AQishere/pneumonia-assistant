@@ -9,27 +9,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins);
   --font-mono: var(--font-roboto-mono);
-  /* BounceBox type scale: xs 14 / small 16 / body 18 / h4 22 / h3 28 / h2 36 / h1 48. */
-  --text-xs: 0.875rem;
-  --text-xs--line-height: 1.4;
-  --text-sm: 1rem;
-  --text-sm--line-height: 1.5;
-  --text-base: 1.125rem;
-  --text-base--line-height: 1.5;
-  --text-lg: 1.375rem;
-  --text-lg--line-height: 1.3;
-  --text-xl: 1.75rem;
-  --text-xl--line-height: 1.25;
-  --text-2xl: 2.25rem;
-  --text-2xl--line-height: 1.2;
-  --text-3xl: 3rem;
-  --text-3xl--line-height: 1.2;
-  --shadow-sm: 0 2px 4px rgb(0 0 0 / 0.08);
-  --shadow-md: 0 4px 10px rgb(0 0 0 / 0.12);
-  --shadow-lg: 0 8px 20px rgb(0 0 0 / 0.15);
-  --shadow-coral: 0 4px 14px rgb(255 107 107 / 0.35);
-  --shadow-teal: 0 4px 14px rgb(78 205 196 / 0.35);
-  --shadow-sunny: 0 4px 14px rgb(255 230 109 / 0.4);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.08);
+  --shadow-coral: 0 2px 8px rgb(255 107 107 / 0.2);
+  --shadow-teal: 0 2px 8px rgb(78 205 196 / 0.2);
+  --shadow-sunny: 0 2px 8px rgb(255 230 109 / 0.25);
   --color-primary-hover: var(--primary-hover);
   --color-secondary-hover: var(--secondary-hover);
   --color-tertiary: var(--tertiary);
@@ -67,10 +52,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
-  --radius-xl: 1.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1rem;
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
@@ -108,7 +93,7 @@
   --chart-3: #60a5fa;
   --chart-4: #ffe66d;
   --chart-5: #2d2d2d;
-  --radius: 1.5rem;
+  --radius: 0.875rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #2d2d2d;
   --sidebar-primary: #ff6b6b;
@@ -142,26 +127,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-base text-foreground;
+    @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
-  }
-  h1 {
-    @apply text-3xl font-bold;
-  }
-  h2 {
-    @apply text-2xl font-bold;
-  }
-  h3 {
-    @apply text-xl font-bold;
-  }
-  h4 {
-    @apply text-lg font-semibold;
-  }
-  /* Simple, chunky icons with thick strokes. */
-  svg.lucide {
-    stroke-width: 3;
   }
 }
 

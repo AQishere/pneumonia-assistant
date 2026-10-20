@@ -1,0 +1,17 @@
+# Pings the API every 5 minutes so Vercel keeps an instance warm. A cold start
+# (unpacking the ~670 MB bundle, importing pandas/scikit-learn/CatBoost, loading
+# the models) takes 5-6 s; a warm request takes about 0.5 s.
+name: Keep API warm
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Ping /health
+        run: curl -fsS --max-time 60 -o /dev/null -w "%{http_code} in %{time_total}s\n" https://pneumonia-assistant-api.vercel.app/health
