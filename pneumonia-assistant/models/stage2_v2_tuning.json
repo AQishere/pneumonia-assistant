@@ -1,0 +1,38 @@
+{
+  "best_params": {
+    "lr_C": 0.18763394405403516,
+    "iterations": 400,
+    "depth": 5,
+    "learning_rate": 0.019230902550672013,
+    "l2_leaf_reg": 10.821920460599483,
+    "random_strength": 2.031547236096471,
+    "bagging_temperature": 0.3708860655940263,
+    "cat_weight": 0.8127692779431506
+  },
+  "threshold": 0.49,
+  "cv_auc_tuned": 0.8096097786946108,
+  "cv_auc_current": 0.8054528573977882,
+  "n_trials": 60,
+  "test_tuned": {
+    "auc": 0.8101969274249067,
+    "auc_ci95": [
+      0.7832785682671884,
+      0.8345121668572109
+    ],
+    "pneumonia_recall": 0.763986013986014,
+    "control_recall": 0.7098445595854922,
+    "missed": 270,
+    "false_alarms": 112
+  },
+  "test_current": {
+    "auc": 0.8089604695822312,
+    "auc_ci95": [
+      0.7820954516398825,
+      0.8332052821763748
+    ],
+    "pneumonia_recall": 0.7447552447552448,
+    "control_recall": 0.727979274611399,
+    "missed": 292,
+    "false_alarms": 105
+  }
+}

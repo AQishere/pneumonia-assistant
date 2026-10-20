@@ -1,0 +1,21 @@
+# MIMIC-derived data: the data use agreement forbids redistribution
+data/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+catboost_info/
+
+# Secrets (also covered by the nested .gitignore files)
+.env
+.env.*
+!.env.example
+!.env.local.example
+*-firebase-adminsdk-*.json
+serviceAccount*.json
+
+# Local working notes
+AGENT_BUILD_SPEC.md
+pneumonia-assistant/progress.md

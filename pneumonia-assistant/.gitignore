@@ -1,0 +1,9 @@
+.env
+*.json.key
+firebase-*.json
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+__pycache__/
+.pytest_cache/
+.venv/
+catboost_info/

@@ -1,0 +1,103 @@
+{
+  "chosen": "equal",
+  "params": {
+    "lr_C": 1.0,
+    "iterations": 700,
+    "depth": 4,
+    "learning_rate": 0.04,
+    "l2_leaf_reg": 5,
+    "random_strength": 1.0,
+    "bagging_temperature": 1.0,
+    "cat_weight": 0.5
+  },
+  "results": [
+    {
+      "ratio": 0.2,
+      "threshold": 0.6,
+      "auc": 0.8052669480778288,
+      "pneumonia_recall": 0.24737762237762237,
+      "control_recall": 0.9715025906735751,
+      "missed": 861,
+      "false_alarms": 11,
+      "app_pneumonia_recall": 0.2465034965034965,
+      "app_control_recall": 0.9715025906735751
+    },
+    {
+      "ratio": 0.3333333333333333,
+      "threshold": 0.57,
+      "auc": 0.8090918149208304,
+      "pneumonia_recall": 0.43356643356643354,
+      "control_recall": 0.9119170984455959,
+      "missed": 648,
+      "false_alarms": 34,
+      "app_pneumonia_recall": 0.4326923076923077,
+      "app_control_recall": 0.9119170984455959
+    },
+    {
+      "ratio": 0.5,
+      "threshold": 0.61,
+      "auc": 0.8092412768578572,
+      "pneumonia_recall": 0.4973776223776224,
+      "control_recall": 0.8937823834196891,
+      "missed": 575,
+      "false_alarms": 41,
+      "app_pneumonia_recall": 0.4965034965034965,
+      "app_control_recall": 0.8937823834196891
+    },
+    {
+      "ratio": 1,
+      "threshold": 0.5,
+      "auc": 0.8081384289285845,
+      "pneumonia_recall": 0.7622377622377622,
+      "control_recall": 0.6968911917098446,
+      "missed": 272,
+      "false_alarms": 117,
+      "app_pneumonia_recall": 0.756993006993007,
+      "app_control_recall": 0.6994818652849741
+    },
+    {
+      "ratio": 2,
+      "threshold": 0.49,
+      "auc": 0.8088336533932388,
+      "pneumonia_recall": 0.8811188811188811,
+      "control_recall": 0.5492227979274611,
+      "missed": 136,
+      "false_alarms": 174,
+      "app_pneumonia_recall": 0.861013986013986,
+      "app_control_recall": 0.5699481865284974
+    },
+    {
+      "ratio": 3,
+      "threshold": 0.5,
+      "auc": 0.8091031377948477,
+      "pneumonia_recall": 0.916958041958042,
+      "control_recall": 0.4481865284974093,
+      "missed": 95,
+      "false_alarms": 213,
+      "app_pneumonia_recall": 0.8828671328671329,
+      "app_control_recall": 0.4948186528497409
+    },
+    {
+      "ratio": 5,
+      "threshold": 0.51,
+      "auc": 0.8077647740860175,
+      "pneumonia_recall": 0.9641608391608392,
+      "control_recall": 0.3134715025906736,
+      "missed": 41,
+      "false_alarms": 265,
+      "app_pneumonia_recall": 0.8994755244755245,
+      "app_control_recall": 0.4430051813471503
+    },
+    {
+      "ratio": "equal",
+      "threshold": 0.53,
+      "auc": 0.8081384289285845,
+      "pneumonia_recall": 0.7377622377622378,
+      "control_recall": 0.7176165803108808,
+      "missed": 300,
+      "false_alarms": 109,
+      "app_pneumonia_recall": 0.7325174825174825,
+      "app_control_recall": 0.7176165803108808
+    }
+  ]
+}

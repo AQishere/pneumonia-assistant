@@ -1,0 +1,90 @@
+{
+  "model": "Stage 2 v2: soft-voting average of logistic regression and CatBoost",
+  "features": [
+    "heart_rate_mean",
+    "heart_rate_min",
+    "heart_rate_max",
+    "heart_rate_std",
+    "respiratory_rate_mean",
+    "respiratory_rate_min",
+    "respiratory_rate_max",
+    "respiratory_rate_std",
+    "sbp_mean",
+    "sbp_min",
+    "sbp_max",
+    "sbp_std",
+    "spo2_mean",
+    "spo2_min",
+    "spo2_std",
+    "temperature_mean",
+    "temperature_min",
+    "temperature_max",
+    "temperature_std",
+    "shock_index",
+    "news_vitals",
+    "fever_measured",
+    "spo2_drop",
+    "heart_rate_range",
+    "respiratory_rate_range",
+    "sbp_range",
+    "temperature_range",
+    "respiratory_distress",
+    "age",
+    "gender_male",
+    "copd",
+    "asthma",
+    "diabetes",
+    "hypertension",
+    "heart_failure",
+    "renal",
+    "weakness",
+    "hypoxemia",
+    "wbc",
+    "neutrophils",
+    "lymphocytes",
+    "nlr",
+    "crp"
+  ],
+  "threshold": 0.54,
+  "cv_auc_mean": 0.8046377441682232,
+  "cv_auc_std": 0.015721942561851877,
+  "test": {
+    "auc": 0.8084871734483133,
+    "balanced_accuracy": 0.7250353273669337,
+    "pneumonia_recall": 0.7272727272727273,
+    "control_recall": 0.7227979274611399,
+    "auc_ci95": [
+      0.7815946264073612,
+      0.8330760731792742
+    ],
+    "balanced_accuracy_ci95": [
+      0.697300197549649,
+      0.7505347101960158
+    ]
+  },
+  "test_current_stage2": {
+    "auc": 0.7965166310373564,
+    "balanced_accuracy": 0.7194169172796115,
+    "pneumonia_recall": 0.7263986013986014,
+    "control_recall": 0.7124352331606217
+  },
+  "auc_gain_vs_current": 0.011970542410956964,
+  "auc_gain_ci95": [
+    0.003229638015569075,
+    0.021201408836839405
+  ],
+  "two_stage_test": {
+    "v2": {
+      "auc": null,
+      "balanced_accuracy": 0.7224129497445559,
+      "pneumonia_recall": 0.722027972027972,
+      "control_recall": 0.7227979274611399
+    },
+    "current": {
+      "auc": null,
+      "balanced_accuracy": 0.7194169172796115,
+      "pneumonia_recall": 0.7263986013986014,
+      "control_recall": 0.7124352331606217
+    }
+  }
+}

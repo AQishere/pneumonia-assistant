@@ -1,0 +1,24 @@
+# Model stack: must stay identical to the notebook's, or the joblib files may
+# not load or may predict differently.
+scikit-learn==1.9.1
+numpy==2.5.4
+pandas==3.0.6
+scipy==1.18.1
+joblib==1.6.0
+catboost==1.2.10        # Stage 2 v2 (logistic regression + CatBoost average)
+optuna==5.0.0           # training/experiments/tune_stage2_v2.py only
+
+# API
+fastapi==0.143.3
+uvicorn==0.54.0
+pydantic==2.14.1
+python-dotenv==1.2.4
+firebase-admin==7.7.0
+google-cloud-firestore==2.34.1
+
+# Agent: client library for Gemini's OpenAI-compatible endpoint (nothing is sent to OpenAI)
+openai==3.35.1
+httpx==0.28.1
+
+# Tests
+pytest==9.1.1
