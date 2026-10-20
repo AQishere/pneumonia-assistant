@@ -2,11 +2,11 @@
 
 import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { HeartPulse } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -74,7 +74,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <div className="mb-2 flex items-center gap-2">
-            <HeartPulse className="size-6 text-red-600" aria-hidden />
+            <BrandMark className="size-8" />
             <CardTitle>Pneumonia Risk Assistant</CardTitle>
           </div>
           <CardDescription>Keep an eye on your chest health with your devices and lab results.</CardDescription>

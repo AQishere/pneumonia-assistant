@@ -1,10 +1,11 @@
 "use client";
 
-import { HeartPulse, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth-context";
@@ -37,10 +38,10 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="border-b bg-background/95">
+      <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3">
-          <Link href={role === "doctor" ? "/doctor" : "/dashboard"} className="flex items-center gap-2 font-semibold">
-            <HeartPulse className="size-5 text-red-600" aria-hidden />
+          <Link href={role === "doctor" ? "/doctor" : "/dashboard"} className="flex items-center gap-2 font-bold text-primary">
+            <BrandMark className="size-7" />
             <span>Pneumonia Risk Assistant</span>
           </Link>
           <nav className="flex flex-1 gap-1 overflow-x-auto">
@@ -49,8 +50,8 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground",
-                  pathname.startsWith(item.href) && "bg-muted font-medium text-foreground",
+                  "rounded-full px-3.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-secondary hover:text-primary",
+                  pathname.startsWith(item.href) && "bg-primary text-primary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
                 )}
               >
                 {item.label}
@@ -67,7 +68,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role: 
         {error && <p className="mb-4 text-sm text-destructive">Server problem: {error}</p>}
         {ready ? children : <PageSkeleton />}
       </main>
-      <footer className="border-t py-4 text-center text-xs text-muted-foreground">
+      <footer className="border-t bg-background/60 py-4 text-center text-xs text-muted-foreground">
         Guidance only. This app cannot diagnose pneumonia or replace a doctor. In an emergency, call Rescue 1122.
       </footer>
     </div>
