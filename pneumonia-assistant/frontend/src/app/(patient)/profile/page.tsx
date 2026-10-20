@@ -74,7 +74,6 @@ export default function ProfilePage() {
       <Card>
         <CardHeader>
           <CardTitle>{profile.display_name}</CardTitle>
-          <CardDescription>Keep your conditions up to date: they are used in every full check.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="max-w-32 space-y-1.5">

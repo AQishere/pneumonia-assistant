@@ -2,7 +2,7 @@
 
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { BAND_INFO, BAND_ORDER, VITAL_INFO, VITALS } from "@/lib/bands";
 import type { AssessmentRow, Band, Reading, Vital } from "@/lib/types";
@@ -36,7 +36,6 @@ export function BandTimeline({ rows }: { rows: AssessmentRow[] }) {
     <Card>
       <CardHeader>
         <CardTitle>Your results by day</CardTitle>
-        <CardDescription>The latest check of each day. A ringed dot means a critical reading that day.</CardDescription>
       </CardHeader>
       <CardContent>
         {data.length === 0 ? (

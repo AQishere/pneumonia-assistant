@@ -254,9 +254,6 @@ export default function DemoPage() {
         <h1 className="flex items-center gap-2 text-2xl font-semibold">
           <FlaskConical className="size-6" aria-hidden /> Demo Test
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter a made-up patient and run the live models on it. Nothing is saved and no AI chat is used.
-        </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -273,10 +270,6 @@ export default function DemoPage() {
           <Card>
             <CardHeader>
               <CardTitle>Vital signs</CardTitle>
-              <CardDescription>
-                Several readings per vital, separated by commas, oldest first. They are treated as taken over the last 24
-                hours. Stage 2 needs at least two per vital.
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {VITALS.map((v) => (
@@ -297,7 +290,6 @@ export default function DemoPage() {
           <Card>
             <CardHeader>
               <CardTitle>Lab results</CardTitle>
-              <CardDescription>Leave all four empty to see what happens without labs.</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-3">
               {LABS.map((l) => (

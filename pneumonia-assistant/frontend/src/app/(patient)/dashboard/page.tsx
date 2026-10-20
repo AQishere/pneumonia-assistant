@@ -46,7 +46,6 @@ export default function DashboardPage() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Hello, {status.display_name.split(" ")[0]}</h1>
-          <p className="text-sm text-muted-foreground">Here is how your readings look right now.</p>
         </div>
         <Button asChild variant="outline">
           <Link href="/chat">

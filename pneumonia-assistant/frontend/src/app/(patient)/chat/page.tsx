@@ -137,13 +137,11 @@ export default function ChatPage() {
       </Card>
 
       <aside className="space-y-4">
-        {result ? (
+        {result && (
           <div key={result.assessed_at} className="animate-message-in space-y-4">
             <CriticalAlerts notice={result.critical_notice} alerts={result.alerts} />
             <StatusCard result={result} />
           </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">Your latest result will appear here when the assistant runs a check.</p>
         )}
       </aside>
     </div>

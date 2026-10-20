@@ -73,10 +73,9 @@ export function StatusCard({ result, band, at }: { result?: AssessResult | null;
           ))}
         </ul>
       )}
-      <p className="mt-3 text-xs opacity-75">
-        {at || result?.assessed_at ? `Checked ${when(at ?? result?.assessed_at)}. ` : ""}
-        {result?.disclaimer ?? "Guidance only. Not a diagnosis."}
-      </p>
+      {(at || result?.assessed_at) && (
+        <p className="mt-3 text-xs opacity-75">Checked {when(at ?? result?.assessed_at)}.</p>
+      )}
     </div>
   );
 }

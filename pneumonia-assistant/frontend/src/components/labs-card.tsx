@@ -74,11 +74,11 @@ export function LabsCard({ patientId, labs, onSaved }: { patientId: string; labs
     <Card>
       <CardHeader>
         <CardTitle>Lab results</CardTitle>
-        <CardDescription>
-          {labs
-            ? `Latest from ${new Date(labs.taken_at).toLocaleDateString()}: WBC ${labs.wbc}, neutrophils ${labs.neutrophils}%, lymphocytes ${labs.lymphocytes}%, CRP ${labs.crp} mg/L.`
-            : "No lab results from the last 7 days. The full check needs recent results."}
-        </CardDescription>
+        {labs && (
+          <CardDescription>
+            {`Latest from ${new Date(labs.taken_at).toLocaleDateString()}: WBC ${labs.wbc}, neutrophils ${labs.neutrophils}%, lymphocytes ${labs.lymphocytes}%, CRP ${labs.crp} mg/L.`}
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid grid-cols-2 gap-3">

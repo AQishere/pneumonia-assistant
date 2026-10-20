@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { YesNo } from "@/components/yes-no";
 import { api, type CheckAnswers } from "@/lib/api";
 import type { AssessResult } from "@/lib/types";
@@ -42,7 +42,6 @@ export function QuickCheck({ patientId, onResult }: { patientId: string; onResul
     <Card>
       <CardHeader>
         <CardTitle>Run a check</CardTitle>
-        <CardDescription>Answer four quick questions. Your device readings and latest labs are used automatically.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         {QUESTIONS.map((q) => (
@@ -57,9 +56,6 @@ export function QuickCheck({ patientId, onResult }: { patientId: string; onResul
         <Button className="mt-2 w-full" disabled={!ready || busy} onClick={run}>
           {busy ? "Checking…" : "Check now"}
         </Button>
-        <p className="text-xs text-muted-foreground">
-          If you have severe difficulty breathing, chest pain, confusion or blue lips, call Rescue 1122 now.
-        </p>
       </CardContent>
     </Card>
   );
