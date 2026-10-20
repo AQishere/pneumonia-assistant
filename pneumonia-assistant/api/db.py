@@ -21,6 +21,7 @@ interface for tests and for running without Firebase credentials. Both pass
 every write through ensure_plain(), so numpy types never reach Firestore.
 """
 
+import json
 import os
 import uuid
 from copy import deepcopy
@@ -171,6 +172,17 @@ class MemoryRepository:
         return [deepcopy(a) for a in rows[:limit]]
 
 
+def firebase_certificate(credentials_path: str | None = None):
+    """Service-account credentials: FIREBASE_CREDENTIALS_JSON (the file's contents, for hosts
+    without secret files, e.g. Vercel), else the file at credentials_path, else None (ADC)."""
+    from firebase_admin import credentials
+
+    raw = os.getenv("FIREBASE_CREDENTIALS_JSON")
+    if raw:
+        return credentials.Certificate(json.loads(raw))
+    return credentials.Certificate(credentials_path) if credentials_path else None
+
+
 class FirestoreRepository:
     backend = "firestore"
 
@@ -179,7 +191,7 @@ class FirestoreRepository:
         from firebase_admin import credentials, firestore
 
         if not firebase_admin._apps:
-            cred = credentials.Certificate(credentials_path) if credentials_path else None
+            cred = firebase_certificate(credentials_path)
             options = {"projectId": project_id} if project_id else None
             firebase_admin.initialize_app(cred, options)
         self._db = firestore.client()

@@ -26,12 +26,13 @@ SERVICE = Caller(kind="service")
 def firebase_verifier():
     """Verify Firebase ID tokens with Google's public keys (no API key needed in the browser)."""
     import firebase_admin
-    from firebase_admin import auth, credentials
+    from firebase_admin import auth
+
+    from api.db import firebase_certificate
 
     if not firebase_admin._apps:
-        path = os.getenv("FIREBASE_CREDENTIALS") or None
         options = {"projectId": os.getenv("FIREBASE_PROJECT_ID")} if os.getenv("FIREBASE_PROJECT_ID") else None
-        firebase_admin.initialize_app(credentials.Certificate(path) if path else None, options)
+        firebase_admin.initialize_app(firebase_certificate(os.getenv("FIREBASE_CREDENTIALS") or None), options)
 
     def verify(token: str) -> dict:
         decoded = auth.verify_id_token(token)

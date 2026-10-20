@@ -25,7 +25,7 @@ matches):
 
 ```powershell
 ..\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # requirements.txt alone is what the deployed API needs
 copy .env.example .env      # then fill in API_KEY, GEMINI_API_KEY, Firebase settings
 
 cd frontend

@@ -1,0 +1,5 @@
+# Everything in requirements.txt (what the deployed API needs) plus training and test tools.
+-r requirements.txt
+
+optuna==5.0.0           # training/experiments/tune_stage2_v2.py only
+pytest==9.1.1

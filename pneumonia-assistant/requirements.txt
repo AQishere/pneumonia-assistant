@@ -6,7 +6,6 @@ pandas==3.0.6
 scipy==1.18.1
 joblib==1.6.0
 catboost==1.2.10        # Stage 2 v2 (logistic regression + CatBoost average)
-optuna==5.0.0           # training/experiments/tune_stage2_v2.py only
 
 # API
 fastapi==0.143.3
@@ -19,6 +18,3 @@ google-cloud-firestore==2.34.1
 # Agent: client library for Gemini's OpenAI-compatible endpoint (nothing is sent to OpenAI)
 openai==3.35.1
 httpx==0.28.1
-
-# Tests
-pytest==9.1.1
